@@ -1,0 +1,364 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://maven.fabric.io/public' }
+    }
+    dependencies {
+        classpath('com.android.tools.build:gradle:2.2.0') {
+            force = true
+        }
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://maven.fabric.io/public' }
+        maven { url 'http://dl.bintray.com/mobialia/maven' }
+
+        flatDir {
+            dirs 'aars'
+        }
+    }
+}
+
+apply plugin: 'distribution'
+
+distributions {
+    releaseSamples {
+        contents {
+            exclude '*.iml'
+            exclude '._*'
+            exclude 'build'
+            exclude 'local.properties'
+            exclude '**/libportum_ogl_sdk_static-d.a'
+
+            into('gradle') {
+                from 'dist/settings.sample.gradle'
+                rename ('settings.sample.gradle', 'settings.gradle')
+            }
+            into('gradle') {
+                from 'dist/build.sample.gradle'
+                rename ('build.sample.gradle', 'build.gradle')
+            }
+            into('gradle') {
+                from 'dist/local.sample.properties'
+                rename ('local.sample.properties', 'local.properties')
+            }
+            into('gradle') { from 'gradle.properties' }
+            into('gradle') { from 'gradlew' }
+            into('gradle') { from 'gradlew.bat' }
+            into('gradle/gradle/wrapper') { from 'gradle/wrapper' }
+            into('gradle/java-sample') {
+                from 'java-sample'
+            }
+            into('gradle/java-sample/aars') {
+                from 'sdk/build/outputs/aar/sdk-release.aar'
+                rename ('sdk-release.aar', 'vrad_ogl_sdk_latest.aar')
+            }
+            into('gradle/java-sample') {
+                from 'dist/build.gradle.java-sample.gradle'
+                rename ('build.gradle.java-sample.gradle', 'build.gradle')
+            }
+
+            into('gradle/ndk-sample') {
+                from 'ndk-sample'
+                exclude 'externalNativeBuild'
+                exclude '.externalNativeBuild'
+            }
+
+            into('gradle/vr-sample') {
+                from 'vr-sample'
+            }
+            into('gradle/vr-sample/aars') {
+                from 'sdk/build/outputs/aar/sdk-release.aar'
+                rename ('sdk-release.aar', 'vrad_ogl_sdk_latest.aar')
+            }
+            into('gradle/vr-sample') {
+                from 'dist/build.gradle.vr-sample.gradle'
+                rename ('build.gradle.vr-sample.gradle', 'build.gradle')
+            }
+
+            into('adt/portum-lib') {
+                from 'sdk/src/main/AndroidManifest.xml'
+            }
+            into('adt/portum-lib') {
+                from 'dist/project.eclipse.lib.properties'
+                rename ('project.eclipse.lib.properties', 'project.properties')
+            }
+            into('adt/portum-lib/assets') {
+                from 'sdk/src/main/assets'
+            }
+            into('adt/portum-lib/res') {
+                from 'sdk/src/main/res'
+            }
+            into('adt/portum-lib/libs') {
+                from 'sdk/build/intermediates/ndkBuild/release/lib'
+            }
+            into('adt/portum-lib/libs') {
+                from(zipTree('sdk/build/outputs/aar/sdk-release.aar')) { include 'classes.jar' }
+                rename ('classes.jar', "portum-${project(':sdk').version}.jar")
+            }
+
+            into('adt/java-sample') {
+                from 'java-sample/src/main/AndroidManifest.xml'
+            }
+            into('adt/java-sample/src') {
+                from 'java-sample/src/main/java'
+            }
+            into('adt/java-sample/assets') {
+                from 'java-sample/src/main/assets'
+            }
+            into('adt/java-sample/res') {
+                from 'java-sample/src/main/res'
+            }
+            into('adt/java-sample') {
+                from 'dist/project.eclipse.java-sample.properties'
+                rename ('project.eclipse.java-sample.properties', 'project.properties')
+            }
+
+            into('adt/ndk-sample') {
+                from 'ndk-sample/src/main/AndroidManifest.xml'
+            }
+            into('adt/ndk-sample/src') {
+                from 'ndk-sample/src/main/java'
+            }
+            into('adt/ndk-sample/assets') {
+                from 'ndk-sample/src/main/assets'
+            }
+            into('adt/ndk-sample/res') {
+                from 'ndk-sample/src/main/res'
+            }
+            into('adt/ndk-sample/jni') {
+                from 'ndk-sample/src/main/jni'
+            }
+            into('adt/ndk-sample') {
+                from 'dist/project.eclipse.ndk-sample.properties'
+                rename ('project.eclipse.ndk-sample.properties', 'project.properties')
+            }
+            into('adt/ndk-sample/jni/thirdparty/portum') {
+                from 'dist/Android.release.mk'
+                rename ('Android.release.mk', 'Android.mk')
+            }
+        }
+    }
+    debugSamples {
+        contents {
+            exclude '*.iml'
+            exclude 'build'
+            exclude 'local.properties'
+            exclude '**/libportum_ogl_sdk_static.a'
+
+            into('gradle') {
+                from 'dist/settings.sample.gradle'
+                rename ('settings.sample.gradle', 'settings.gradle')
+            }
+            into('gradle') {
+                from 'dist/build.sample.gradle'
+                rename ('build.sample.gradle', 'build.gradle')
+            }
+            into('gradle') {
+                from 'dist/local.sample.properties'
+                rename ('local.sample.properties', 'local.properties')
+            }
+            into('gradle') { from 'gradle.properties' }
+            into('gradle') { from 'gradlew' }
+            into('gradle') { from 'gradlew.bat' }
+            into('gradle/gradle/wrapper') { from 'gradle/wrapper' }
+
+            into('gradle/java-sample') {
+                from 'java-sample'
+            }
+            into('gradle/java-sample/aars') {
+                from 'sdk/build/outputs/aar/sdk-debug.aar'
+                rename ('sdk-debug.aar', 'vrad_ogl_sdk_latest.aar')
+            }
+            into('gradle/java-sample') {
+                from 'dist/build.gradle.java-sample.gradle'
+                rename ('build.gradle.java-sample.gradle', 'build.gradle')
+            }
+
+            into('gradle/ndk-sample') {
+                from 'ndk-sample'
+                exclude 'externalNativeBuild'
+                exclude '.externalNativeBuild'
+                exclude '**/thirdparty/portum/Android.mk'
+            }
+            into('gradle/ndk-sample/src/main/jni/thirdparty/portum') {
+                from 'dist/Android.debug.mk'
+                rename ('Android.debug.mk', 'Android.mk')
+            }
+
+            into('gradle/vr-sample') {
+                from 'vr-sample'
+            }
+            into('gradle/vr-sample/aars') {
+                from 'sdk/build/outputs/aar/sdk-debug.aar'
+                rename ('sdk-debug.aar', 'vrad_ogl_sdk_latest.aar')
+            }
+            into('gradle/vr-sample') {
+                from 'dist/build.gradle.vr-sample.gradle'
+                rename ('build.gradle.vr-sample.gradle', 'build.gradle')
+            }
+
+            into('adt/portum-lib') {
+                from 'sdk/src/main/AndroidManifest.xml'
+            }
+            into('adt/portum-lib') {
+                from 'dist/project.eclipse.lib.properties'
+                rename ('project.eclipse.lib.properties', 'project.properties')
+            }
+            into('adt/portum-lib/assets') {
+                from 'sdk/src/main/assets'
+            }
+            into('adt/portum-lib/res') {
+                from 'sdk/src/main/res'
+            }
+            into('adt/portum-lib/libs') {
+                from 'sdk/build/intermediates/ndkBuild/debug/lib'
+            }
+            into('adt/portum-lib/libs') {
+                from(zipTree('sdk/build/outputs/aar/sdk-debug.aar')) { include 'classes.jar' }
+                rename ('classes.jar', "portum-${project(':sdk').version}.jar")
+            }
+
+            into('adt/java-sample') {
+                from 'java-sample/src/main/AndroidManifest.xml'
+            }
+            into('adt/java-sample') {
+                from 'dist/project.eclipse.java-sample.properties'
+                rename ('project.eclipse.java-sample.properties', 'project.properties')
+            }
+            into('adt/java-sample/src') {
+                from 'java-sample/src/main/java'
+            }
+            into('adt/java-sample/assets') {
+                from 'java-sample/src/main/assets'
+            }
+            into('adt/java-sample/res') {
+                from 'java-sample/src/main/res'
+            }
+
+            into('adt/ndk-sample') {
+                from 'ndk-sample/src/main/AndroidManifest.xml'
+            }
+            into('adt/ndk-sample') {
+                from 'dist/project.eclipse.ndk-sample.properties'
+                rename ('project.eclipse.ndk-sample.properties', 'project.properties')
+            }
+            into('adt/ndk-sample/src') {
+                from 'ndk-sample/src/main/java'
+            }
+            into('adt/ndk-sample/assets') {
+                from 'ndk-sample/src/main/assets'
+            }
+            into('adt/ndk-sample/res') {
+                from 'ndk-sample/src/main/res'
+            }
+            into('adt/ndk-sample/jni') {
+                from 'ndk-sample/src/main/jni'
+            }
+            into('adt/ndk-sample/jni/thirdparty/portum') {
+                from 'dist/Android.debug.mk'
+                rename ('Android.debug.mk', 'Android.mk')
+            }
+        }
+    }
+    releaseNdk {
+        contents {
+            exclude '**/libportum_ogl_sdk_static-d.a'
+
+            into ('.') {
+                from 'sdk/src/main/jni/thirdparty/portum'
+            }
+            into ('.') {
+                from 'dist/Android.release.mk'
+                rename ('Android.release.mk', 'Android.mk')
+            }
+        }
+    }
+    debugNdk {
+        contents {
+            exclude '**/libportum_ogl_sdk_static.a'
+
+            
+            into ('.') {
+                from 'sdk/src/main/jni/thirdparty/portum'
+            }
+            into ('.') {
+                from 'dist/Android.debug.mk'
+                rename ('Android.debug.mk', 'Android.mk')
+            }
+        }
+    }
+    releaseEclipse {
+        contents {
+            exclude '*.iml'
+            exclude 'build'
+            exclude 'local.properties'
+            exclude '**/libportum_ogl_sdk_static-d.a'
+
+            into('portum-lib') {
+                from 'sdk/src/main/AndroidManifest.xml'
+            }
+            into('portum-lib') {
+                from 'dist/project.eclipse.lib.properties'
+                rename ('project.eclipse.lib.properties', 'project.properties')
+            }
+            into('portum-lib/assets') {
+                from 'sdk/src/main/assets'
+            }
+            into('portum-lib/res') {
+                from 'sdk/src/main/res'
+            }
+            into('portum-lib/libs') {
+                from 'sdk/build/intermediates/ndkBuild/release/lib'
+            }
+            into('portum-lib/libs') {
+                from(zipTree('sdk/build/outputs/aar/sdk-release.aar')) { include 'classes.jar' }
+                rename ('classes.jar', "portum-${project(':sdk').version}.jar")
+            }
+        }
+    }
+    debugEclipse {
+        contents {
+            exclude '*.iml'
+            exclude 'build'
+            exclude 'local.properties'
+            exclude '**/libportum_ogl_sdk_static.a'
+
+            into('portum-lib') {
+                from 'sdk/src/main/AndroidManifest.xml'
+            }
+            into('portum-lib') {
+                from 'dist/project.eclipse.lib.properties'
+                rename ('project.eclipse.lib.properties', 'project.properties')
+            }
+            into('portum-lib/assets') {
+                from 'sdk/src/main/assets'
+            }
+            into('portum-lib/res') {
+                from 'sdk/src/main/res'
+            }
+            into('portum-lib/libs') {
+                from 'sdk/build/intermediates/ndkBuild/debug/lib'
+            }
+            into('portum-lib/libs') {
+                from(zipTree('sdk/build/outputs/aar/sdk-debug.aar')) { include 'classes.jar' }
+                rename ('classes.jar', "portum-${project(':sdk').version}.jar")
+            }
+        }
+    }
+}
+
+debugSamplesDistTar.enabled = false
+releaseSamplesDistTar.enabled = false
+
+releaseNdkDistTar.enabled = false
+debugNdkDistTar.enabled = false
+
+releaseEclipseDistTar.enabled = false
+debugEclipseDistTar.enabled = false

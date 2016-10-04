@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="audio-0.9.1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/vr-sample/build/intermediates/exploded-aar/com.google.gvr/audio/0.9.1/res" />
+      <root url="jar://$PROJECT_DIR$/vr-sample/build/intermediates/exploded-aar/com.google.gvr/audio/0.9.1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
