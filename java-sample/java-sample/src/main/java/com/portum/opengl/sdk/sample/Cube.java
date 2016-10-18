@@ -38,7 +38,7 @@ import static android.opengl.GLES20.GL_COMPILE_STATUS;
  * Displaying Graphics with OpenGL ES</a> developer guide.
  */
 public class Cube {
-    private static final String[] AD_SPACE_IDS = { "47", "48", "49", "47", "48", "49" };
+    private static final String[] AD_SPACE_IDS = { "119", "119", "129", "129", "60", "60" };
     //private static final String[] AD_SPACE_IDS = { "106", "107", "57", "106", "107", "57" };
 
     /** Cube vertices */

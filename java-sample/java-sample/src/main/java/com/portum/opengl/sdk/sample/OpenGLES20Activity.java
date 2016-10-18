@@ -24,6 +24,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class OpenGLES20Activity extends Activity {
     private GLSurfaceView mGLView;
     TextView tv = null;
@@ -69,6 +73,45 @@ public class OpenGLES20Activity extends Activity {
                 svChanged.setValue(x, y, z);
             }
         });
+
+        //Thread to update TextView with logs.
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(2000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // update TextView here!
+                                updateLog();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+
+        t.start();
+    }
+
+    private void updateLog(){
+        try {
+            Process process = Runtime.getRuntime().exec("logcat -d");
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+
+            StringBuilder log=new StringBuilder();
+            String line = "";
+            while ((line = bufferedReader.readLine()) != null) {
+                log.append(line);
+            }
+            tv.setText(log.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
